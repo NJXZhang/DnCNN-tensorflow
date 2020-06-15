@@ -34,9 +34,10 @@ def denoiser_test(denoiser):
     eval_files = glob('./data/test/original/*.png')
     eval_files = sorted(eval_files)
     start = time.time()
-    denoiser.test(eval_files, noisy_eval_files, ckpt_dir=args.ckpt_dir, save_dir='./data/denoised', temporal=args.temporal)
+    denoiser.test(eval_files, noisy_eval_files, ckpt_dir=args.ckpt_dir, save_dir='./data/denoised')
     end = time.time()
-    print "Elapsed time:", end-start
+    print("Elapsed time:", end - start)
+
 
 def main(_):
     if not os.path.exists(args.ckpt_dir):
@@ -64,6 +65,7 @@ def main(_):
         with tf.Session() as sess:
             model = denoiser(sess)
             if args.phase == 'train':
+                print('Start training')
                 denoiser_train(model, lr=lr)
             elif args.phase == 'test':
                 denoiser_test(model)
@@ -72,8 +74,10 @@ def main(_):
                 exit(0)
 
 def test():
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
-    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
+    config = None
+    if args.use_gpu == 1:
+        config = tf.ConfigProto(gpu_options=tf.GPUOptions(per_process_gpu_memory_fraction=0.9))
+    with tf.Session(config=config) as sess:
       model = denoiser(sess)
       denoiser_test(model)
 

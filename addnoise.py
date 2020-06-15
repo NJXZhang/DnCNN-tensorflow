@@ -43,7 +43,7 @@ def main():
   sig_test = np.linspace(0,50,len(filepaths_test))
   np.random.shuffle(sig_test)
 
-  for i in xrange(len(filepaths)):
+  for i in range(len(filepaths)):
         image = cv2.imread(filepaths[i])
         image = cv2.resize(image,(180,180), interpolation = cv2.INTER_CUBIC)
         row,col,ch = image.shape
@@ -57,7 +57,7 @@ def main():
         cv2.imwrite(os.path.join(save_dir, "noisy/%04d.png" %i), noisy)
         cv2.imwrite(os.path.join(save_dir, "original/%04d.png" %i), image)
         
-  for i in xrange(len(filepaths_test)):
+  for i in range(len(filepaths_test)):
         image = cv2.imread(filepaths_test[i])
         image = cv2.resize(image,(180,180), interpolation = cv2.INTER_CUBIC)
         row,col,ch = image.shape
